@@ -41,6 +41,7 @@ namespace DeadlockCISBot
             });
 
             Client.Ready += OnClient_Ready;
+            Client.ComponentInteractionCreated += Client_ComponentInteractionCreated;
 
             var CommandsConfig = new CommandsNextConfiguration()
             {
@@ -57,6 +58,18 @@ namespace DeadlockCISBot
 
             await Client.ConnectAsync();
             await Task.Delay(-1);
+        }
+
+        private static async Task Client_ComponentInteractionCreated(DiscordClient sender, ComponentInteractionCreateEventArgs e)
+        {
+            if(e.Interaction.Data.CustomId == "addButton")
+            {
+                await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DSharpPlus.Entities.DiscordInteractionResponseBuilder().WithContent($"{e.User.Username} нажал кнопку добавления"));
+            } 
+            else if(e.Interaction.Data.CustomId == "deleteButton")
+            {
+                await e.Interaction.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DSharpPlus.Entities.DiscordInteractionResponseBuilder().WithContent($"{e.User.Username} нажал кнопку вычитания"));
+            }
         }
 
         private static Task OnClient_Ready(DiscordClient sender, ReadyEventArgs args)
