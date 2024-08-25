@@ -217,11 +217,10 @@ namespace DeadlockCISBot
 
         private static async Task Client_VoiceStateUpdated(DiscordClient sender, VoiceStateUpdateEventArgs e)
         {
-            //var guild = await sender.GetGuildAsync(1264136717015977986);
             var voiceChannelForCreation = await sender.GetChannelAsync(1277177145294327820);
             var usersWantsToCreate = voiceChannelForCreation.Users;
             int cnt = (await VoiceChannelList).Where(v => v.Type == ChannelType.Voice && v.ParentId == 1277178639837954109).ToList().Count;
-            if (cnt > 0)    // TODO: стоит костыль (2 - войс создание и админский) нужно отбирать только войсы с определенной категорией
+            if (cnt > 0)
             {
                 await DeleteEmptyVoice();
             }
@@ -232,7 +231,6 @@ namespace DeadlockCISBot
                     var category = await sender.GetChannelAsync(1277178639837954109);
                     var channelDirection = await (await Guild).CreateVoiceChannelAsync($"Войс {User.Username}", parent: category);
                     await channelDirection.PlaceMemberAsync(User).ConfigureAwait(false);
-                    //VoiceChannelList.Add(channelDirection);
                 }
             }
             if (voiceInvitelList.Any())
@@ -249,7 +247,6 @@ namespace DeadlockCISBot
                     if (Channel.Users.Count == 0 && Channel.Type == ChannelType.Voice && Channel.ParentId == 1277178639837954109)
                     {
                         await Channel.DeleteAsync("End of the event");
-                        //VoiceChannelList.Remove(Channel);
                     }
                 }
         }
@@ -296,8 +293,8 @@ namespace DeadlockCISBot
 
         public async Task ChannelCreate(CommandContext ctx)
         {
-            var category = ctx.Channel.Guild.GetChannel(1266454424457445417);//Получаем категорию
-            var channel = await ctx.Guild.CreateVoiceChannelAsync("ChannelName", parent: category);//Делаем канал в нужной категории
+            var category = ctx.Channel.Guild.GetChannel(1266454424457445417);
+            var channel = await ctx.Guild.CreateVoiceChannelAsync("ChannelName", parent: category);
             await channel.PlaceMemberAsync(ctx.Member).ConfigureAwait(false);
         }
 
