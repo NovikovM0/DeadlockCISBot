@@ -159,12 +159,6 @@
     <Compile Include="Commands\Prefix\BasicCommands.cs" />
     <Compile Include="Commands\Emoji.cs" />
     <Compile Include="Commands\Slash\BasicSlashCommands.cs" />
-    <Compile Include="Commands\Slash\bl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Commands\Slash\bl.Designer.cs">
-      <DependentUpon>bl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Config\JSONReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -174,6 +168,8 @@
     <None Include="Config\configuration.json" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Images\DeadlockImage.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

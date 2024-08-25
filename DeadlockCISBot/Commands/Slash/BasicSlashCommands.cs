@@ -1,4 +1,5 @@
-﻿using DSharpPlus.Entities;
+﻿using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
 using System;
@@ -6,11 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace DeadlockCISBot.Commands.Slash
 {
     [SlashCommandGroup("pool", "Создать голосование")]
-    internal class BasicSlashCommands : ApplicationCommandModule
+    internal class PoolSlashCommands : ApplicationCommandModule
     {
         [SlashCommand("timer", "Создать голосование с таймером")]
         public async Task TimerPoolSlashCommand(InteractionContext ctx,
@@ -34,7 +36,6 @@ namespace DeadlockCISBot.Commands.Slash
 
             var poolEmbed = new DiscordEmbedBuilder
             {
-                Color = DiscordColor.SapGreen,
                 Title = poolTitle,
                 Description = poolDescription,
             };
@@ -97,6 +98,45 @@ namespace DeadlockCISBot.Commands.Slash
             }
 
             await ctx.EditResponseAsync(new DSharpPlus.Entities.DiscordWebhookBuilder());
+        }
+    }
+
+    [SlashCommandGroup("news", "Опубликовать новость")]
+    internal class NewsSlashCommands : ApplicationCommandModule
+    {
+        [SlashCommand("game", "Опубликовать новость об игре")]
+        public async Task GameNewsSlashCommand(InteractionContext ctx,
+            [Option("Title", "Вставьте заголовок обновление")] string newsTitle,
+            [Option("Description", "Краткое описание обновления")] string newsDescription,
+            [Option("patchLink", "Ссылка на обновление")] string patchLink,
+            [Option("imageLink", "Ссылка на картинку")] string imageLink = "https://i.ibb.co/cLWykR3/Deadlock-Image.jpg")
+        {
+            await ctx.DeferAsync();
+            var message = new DiscordEmbedBuilder
+            {
+                Title = newsTitle,
+                Description = $"{newsDescription}\n\n" +
+                $"[**Полное обновление**]({patchLink})",
+                ImageUrl = $"{imageLink}",
+            };
+            await ctx.EditResponseAsync(new DSharpPlus.Entities.DiscordWebhookBuilder().AddEmbed(message));
+        }
+
+        [SlashCommand("server", "Опубликовать новость о сервере")]
+        public async Task ServerGameNewsSlashCommand(InteractionContext ctx,
+            [Option("Title", "Вставьте заголовок новости")] string newsTitle,
+            [Option("Description", "Краткое описание новости")] string newsDescription,
+            [Option("imageLink", "Ссылка на картинку")] string imageLink = "https://i.ibb.co/cLWykR3/Deadlock-Image.jpg")
+
+        {
+            await ctx.DeferAsync();
+            var message = new DiscordEmbedBuilder
+            {
+                Title = newsTitle,
+                Description = newsDescription,
+                ImageUrl = $"{imageLink}",
+            };
+            await ctx.EditResponseAsync(new DSharpPlus.Entities.DiscordWebhookBuilder().AddEmbed(message));
         }
     }
 }
